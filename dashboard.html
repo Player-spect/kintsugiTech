@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Kintsugi Tech</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="dashboard-page">
+    
+    <header>
+        <h1>Kintsugi Tech - Dashboard</h1>
+        <div class="header-actions">
+            <span id="userGreeting" class="user-greeting"></span>
+            <button onclick="logout()" class="btn btn-header" style="background-color: #e53e3e;">Cerrar Sesión</button>
+            <a href="index.html" class="btn btn-header" style="background-color: var(--color-secondary);">Volver al Sitio</a>
+        </div>
+    </header>
+
+    <main class="dashboard-main">
+        <div class="dashboard-container">
+            <h2 id="dashboardTitle">Dashboard</h2>
+            
+            <!-- Estadísticas -->
+            <div id="dashboardStats" class="dashboard-stats">
+                <!-- Se carga dinámicamente -->
+            </div>
+            
+            <!-- Sección de Solicitudes -->
+            <div class="dashboard-section">
+                <h3 id="requestsTitle">Solicitudes</h3>
+                <ul id="requestsList" class="request-list">
+                    <!-- Se carga dinámicamente -->
+                </ul>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Kintsugi Tech - Operaciones Centrales en La Serena, Región de Coquimbo.</p>
+        <p>Economía Circular · Ciberseguridad · Inclusión Digital</p>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        // Variables globales necesarias para el dashboard (se cargan desde script.js)
+        let currentUser = null;
+        const DASHBOARD_DATA = window.DASHBOARD_DATA || {};
+        
+        // Inicializar dashboard al cargar la página
+        document.addEventListener('DOMContentLoaded', () => {
+            initDashboard();
+        });
+
+        /**
+         * Inicializa el dashboard verificando la sesión
+         */
+        function initDashboard() {
+            checkSession();
+            
+            if (!currentUser) {
+                // Redirigir al index si no hay sesión
+                window.location.href = 'index.html';
+                return;
+            }
+            
+            // Mostrar saludo del usuario
+            const userGreeting = document.getElementById('userGreeting');
+            if (userGreeting) {
+                userGreeting.textContent = `Hola, ${currentUser.name}`;
+            }
+            
+            // Cargar contenido según el rol
+            loadDashboardContent();
+        }
+
+        /**
+         * Carga el contenido del dashboard según el rol del usuario
+         */
+        function loadDashboardContent() {
+            const data = DASHBOARD_DATA[currentUser.role];
+            
+            if (!data) {
+                showNotification('Error: No se encontró configuración para tu rol', 'error');
+                return;
+            }
+            
+            // Actualizar título según rol
+            const dashboardTitle = document.getElementById('dashboardTitle');
+            if (currentUser.role === 'admin') {
+                dashboardTitle.textContent = 'Dashboard de Administrador';
+                document.getElementById('requestsTitle').textContent = 'Solicitudes Recientes';
+            } else {
+                dashboardTitle.textContent = 'Dashboard de Cliente';
+                document.getElementById('requestsTitle').textContent = 'Mis Solicitudes';
+            }
+            
+            // Cargar estadísticas
+            loadStats(data.stats);
+            
+            // Cargar lista de solicitudes
+            loadRequests(data.requests);
+        }
+
+        /**
+         * Carga las estadísticas en el dashboard
+         */
+        function loadStats(stats) {
+            const statsContainer = document.getElementById('dashboardStats');
+            if (!statsContainer) return;
+            
+            let statsHTML = '';
+            stats.forEach(stat => {
+                const statClass = currentUser.role === 'client' ? 'stat-card client' : 'stat-card';
+                statsHTML += `
+                    <div class="${statClass}">
+                        <span class="stat-number">${stat.number}</span>
+                        <span class="stat-label">${stat.label}</span>
+                    </div>
+                `;
+            });
+            
+            statsContainer.innerHTML = statsHTML;
+        }
+
+        /**
+         * Carga la lista de solicitudes
+         */
+        function loadRequests(requests) {
+            const requestsList = document.getElementById('requestsList');
+            if (!requestsList) return;
+            
+            let requestsHTML = '';
+            requests.forEach(req => {
+                const statusText = req.status === 'pending' 
+                    ? (currentUser.role === 'admin' ? 'Pendiente' : 'En Proceso')
+                    : 'Completado';
+                
+                const titleField = currentUser.role === 'admin' ? req.company : req.service;
+                const contactField = currentUser.role === 'admin' 
+                    ? `<p><strong>Contacto:</strong> ${req.contact}</p>` 
+                    : '';
+                
+                requestsHTML += `
+                    <li class="request-item ${req.status}">
+                        <h4>${titleField}</h4>
+                        ${contactField}
+                        <p><strong>Volumen:</strong> ${req.volume}</p>
+                        <p><strong>Fecha:</strong> ${req.date}</p>
+                        <span class="status-badge ${req.status}">${statusText}</span>
+                    </li>
+                `;
+            });
+            
+            requestsList.innerHTML = requestsHTML;
+        }
+
+        /**
+         * Cierra la sesión y redirige al index
+         */
+        function logout() {
+            currentUser = null;
+            localStorage.removeItem('kintsugi_user');
+            showNotification('Sesión cerrada correctamente', 'info');
+            
+            // Redirigir al index después de un breve delay
+            setTimeout(() => {
+                window.location.href = 'index.html';
+            }, 500);
+        }
+    </script>
+</body>
+</html>

@@ -410,16 +410,12 @@ function initLoginSystem() {
         loginForm.addEventListener('submit', handleLogin);
     }
     
-    // Cerrar modal al hacer click fuera del contenido
+    // Cerrar modal al hacer click fuera del contenido (solo en index.html)
     window.addEventListener('click', (e) => {
         const loginModal = document.getElementById('loginModal');
-        const dashboardModal = document.getElementById('dashboardModal');
         
         if (e.target === loginModal) {
             closeLoginModal();
-        }
-        if (e.target === dashboardModal) {
-            closeDashboard();
         }
     });
 }
@@ -521,25 +517,8 @@ function openDashboard() {
         return;
     }
     
-    const dashboardModal = document.getElementById('dashboardModal');
-    const dashboardTitle = document.getElementById('dashboardTitle');
-    const dashboardContent = document.getElementById('dashboardContent');
-    
-    if (dashboardModal && dashboardContent) {
-        // Cargar contenido según el rol del usuario
-        const data = DASHBOARD_DATA[currentUser.role];
-        
-        if (currentUser.role === 'admin') {
-            dashboardTitle.textContent = 'Dashboard de Administrador';
-            dashboardContent.innerHTML = generateAdminDashboard(data);
-        } else {
-            dashboardTitle.textContent = 'Dashboard de Cliente';
-            dashboardContent.innerHTML = generateClientDashboard(data);
-        }
-        
-        dashboardModal.style.display = 'block';
-        document.body.style.overflow = 'hidden';
-    }
+    // Redirigir a dashboard.html
+    window.location.href = 'dashboard.html';
 }
 
 /**
@@ -631,12 +610,30 @@ function closeDashboard() {
 }
 
 /**
- * Cierra la sesión del usuario
+ * Cierra la sesión del usuario y redirige al index
  */
 function logout() {
     currentUser = null;
     localStorage.removeItem('kintsugi_user');
-    updateLoginButton();
-    closeDashboard();
-    showNotification('Sesión cerrada correctamente', 'info');
+    
+    // Si estamos en dashboard.html, mostrar notificación y redirigir
+    if (window.location.pathname.includes('dashboard.html')) {
+        showNotification('Sesión cerrada correctamente', 'info');
+        setTimeout(() => {
+            window.location.href = 'index.html';
+        }, 500);
+    } else {
+        // Si estamos en index.html, actualizar botón y mostrar notificación
+        updateLoginButton();
+        showNotification('Sesión cerrada correctamente', 'info');
+    }
+}
+
+// Exportar funciones y datos para que sean accesibles desde dashboard.html
+if (typeof window !== 'undefined') {
+    window.logout = logout;
+    window.checkSession = checkSession;
+    window.showNotification = showNotification;
+    window.DASHBOARD_DATA = DASHBOARD_DATA;
+    window.USERS = USERS;
 }
