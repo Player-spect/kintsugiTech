@@ -3,13 +3,82 @@
  * Código refactorizado con mejores prácticas
  */
 
+// Usuarios simulados (sin base de datos)
+const USERS = {
+    admin: {
+        email: 'admin@kintsugitech.cl',
+        password: 'admin123',
+        role: 'admin',
+        name: 'Administrador'
+    },
+    client: {
+        email: 'cliente@empresa.cl',
+        password: 'cliente123',
+        role: 'client',
+        name: 'Cliente Empresa'
+    }
+};
+
+// Estado de sesión
+let currentUser = null;
+
+// Datos simulados para el dashboard
+const DASHBOARD_DATA = {
+    admin: {
+        stats: [
+            { number: '47', label: 'Empresas Atendidas' },
+            { number: '1,250', label: 'Equipos Reciclados' },
+            { number: '18', label: 'Solicitudes Pendientes' },
+            { number: '98%', label: 'Tasa de Satisfacción' }
+        ],
+        requests: [
+            { company: 'Minera Los Pelambres', contact: 'Carlos Ruiz', volume: '50+ equipos', status: 'pending', date: '2026-01-15' },
+            { company: 'Hospital La Serena', contact: 'María González', volume: '21-50 equipos', status: 'pending', date: '2026-01-14' },
+            { company: 'Universidad Católica Norte', contact: 'Pedro Sánchez', volume: '1-20 equipos', status: 'completed', date: '2026-01-10' },
+            { company: 'Municipalidad de Coquimbo', contact: 'Ana López', volume: '21-50 equipos', status: 'completed', date: '2026-01-08' }
+        ]
+    },
+    client: {
+        stats: [
+            { number: '3', label: 'Solicitudes Realizadas' },
+            { number: '85', label: 'Equipos Reciclados' },
+            { number: '2', label: 'Certificados Emitidos' },
+            { number: '1', label: 'Solicitudes Pendientes' }
+        ],
+        requests: [
+            { service: 'Evaluación de Activos TI', volume: '21-50 equipos', status: 'pending', date: '2026-01-15' },
+            { service: 'Retiro y Destrucción de Datos', volume: '15 equipos', status: 'completed', date: '2025-12-20' },
+            { service: 'Donación de Equipos', volume: '20 equipos', status: 'completed', date: '2025-11-15' }
+        ]
+    }
+};
+
 document.addEventListener('DOMContentLoaded', () => {
     // Inicializar carrusel
     initCarousel();
     
     // Inicializar animaciones al hacer scroll
     initScrollAnimations();
+    
+    // Inicializar sistema de login
+    initLoginSystem();
+    
+    // Verificar si hay sesión activa
+    checkSession();
 });
+
+/**
+ * Scroll suave hasta la sección de contacto
+ */
+function scrollToContact() {
+    const contactSection = document.getElementById('contacto');
+    if (contactSection) {
+        contactSection.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+        });
+    }
+}
 
 /**
  * Carrusel de Imágenes
@@ -284,7 +353,7 @@ function showNotification(message, type = 'info') {
 }
 
 /**
- * Smooth scroll para enlaces internos
+ * Smooth scroll para enlaces internos (excepto el botón de contacto que usa scrollToContact)
  */
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function(e) {
@@ -292,7 +361,7 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         const targetId = this.getAttribute('href');
         const targetElement = document.querySelector(targetId);
         
-        if (targetElement) {
+        if (targetElement && targetId !== '#contacto') {
             targetElement.scrollIntoView({
                 behavior: 'smooth',
                 block: 'start'
@@ -327,3 +396,247 @@ style.textContent = `
     }
 `;
 document.head.appendChild(style);
+
+/**
+ * SISTEMA DE LOGIN SIN BASE DE DATOS
+ */
+
+/**
+ * Inicializa el sistema de login
+ */
+function initLoginSystem() {
+    const loginForm = document.getElementById('loginForm');
+    if (loginForm) {
+        loginForm.addEventListener('submit', handleLogin);
+    }
+    
+    // Cerrar modal al hacer click fuera del contenido
+    window.addEventListener('click', (e) => {
+        const loginModal = document.getElementById('loginModal');
+        const dashboardModal = document.getElementById('dashboardModal');
+        
+        if (e.target === loginModal) {
+            closeLoginModal();
+        }
+        if (e.target === dashboardModal) {
+            closeDashboard();
+        }
+    });
+}
+
+/**
+ * Abre el modal de login
+ */
+function openLoginModal() {
+    const loginModal = document.getElementById('loginModal');
+    if (loginModal) {
+        loginModal.style.display = 'block';
+        document.body.style.overflow = 'hidden'; // Prevenir scroll
+    }
+}
+
+/**
+ * Cierra el modal de login
+ */
+function closeLoginModal() {
+    const loginModal = document.getElementById('loginModal');
+    if (loginModal) {
+        loginModal.style.display = 'none';
+        document.body.style.overflow = '';
+    }
+}
+
+/**
+ * Maneja el envío del formulario de login
+ */
+function handleLogin(e) {
+    e.preventDefault();
+    
+    const email = document.getElementById('loginEmail').value.trim();
+    const password = document.getElementById('loginPassword').value.trim();
+    
+    // Buscar usuario en el objeto USERS
+    let foundUser = null;
+    for (const key in USERS) {
+        if (USERS[key].email === email && USERS[key].password === password) {
+            foundUser = USERS[key];
+            break;
+        }
+    }
+    
+    if (foundUser) {
+        // Login exitoso - guardar sesión en localStorage
+        currentUser = foundUser;
+        localStorage.setItem('kintsugi_user', JSON.stringify(foundUser));
+        
+        showNotification(`¡Bienvenido ${foundUser.name}!`, 'success');
+        closeLoginModal();
+        
+        // Abrir dashboard después de un breve delay
+        setTimeout(() => {
+            openDashboard();
+        }, 500);
+        
+        // Limpiar formulario
+        document.getElementById('loginForm').reset();
+    } else {
+        // Login fallido
+        showNotification('Correo o contraseña incorrectos', 'error');
+    }
+}
+
+/**
+ * Verifica si hay una sesión activa
+ */
+function checkSession() {
+    const savedUser = localStorage.getItem('kintsugi_user');
+    if (savedUser) {
+        try {
+            currentUser = JSON.parse(savedUser);
+            updateLoginButton();
+        } catch (e) {
+            localStorage.removeItem('kintsugi_user');
+        }
+    }
+}
+
+/**
+ * Actualiza el botón de login según el estado de sesión
+ */
+function updateLoginButton() {
+    const loginBtn = document.getElementById('loginBtn');
+    if (loginBtn && currentUser) {
+        loginBtn.textContent = `Hola, ${currentUser.name.split(' ')[0]}`;
+        loginBtn.onclick = openDashboard;
+        loginBtn.style.backgroundColor = 'var(--color-accent)';
+    }
+}
+
+/**
+ * Abre el dashboard del usuario
+ */
+function openDashboard() {
+    if (!currentUser) {
+        openLoginModal();
+        return;
+    }
+    
+    const dashboardModal = document.getElementById('dashboardModal');
+    const dashboardTitle = document.getElementById('dashboardTitle');
+    const dashboardContent = document.getElementById('dashboardContent');
+    
+    if (dashboardModal && dashboardContent) {
+        // Cargar contenido según el rol del usuario
+        const data = DASHBOARD_DATA[currentUser.role];
+        
+        if (currentUser.role === 'admin') {
+            dashboardTitle.textContent = 'Dashboard de Administrador';
+            dashboardContent.innerHTML = generateAdminDashboard(data);
+        } else {
+            dashboardTitle.textContent = 'Dashboard de Cliente';
+            dashboardContent.innerHTML = generateClientDashboard(data);
+        }
+        
+        dashboardModal.style.display = 'block';
+        document.body.style.overflow = 'hidden';
+    }
+}
+
+/**
+ * Genera el HTML del dashboard de administrador
+ */
+function generateAdminDashboard(data) {
+    let statsHTML = '<div class="dashboard-stats">';
+    data.stats.forEach(stat => {
+        statsHTML += `
+            <div class="stat-card">
+                <span class="stat-number">${stat.number}</span>
+                <span class="stat-label">${stat.label}</span>
+            </div>
+        `;
+    });
+    statsHTML += '</div>';
+    
+    let requestsHTML = '<ul class="request-list">';
+    data.requests.forEach(req => {
+        const statusText = req.status === 'pending' ? 'Pendiente' : 'Completado';
+        requestsHTML += `
+            <li class="request-item ${req.status}">
+                <h4>${req.company}</h4>
+                <p><strong>Contacto:</strong> ${req.contact}</p>
+                <p><strong>Volumen:</strong> ${req.volume}</p>
+                <p><strong>Fecha:</strong> ${req.date}</p>
+                <span class="status-badge ${req.status}">${statusText}</span>
+            </li>
+        `;
+    });
+    requestsHTML += '</ul>';
+    
+    return `
+        ${statsHTML}
+        <div class="dashboard-section">
+            <h3>Solicitudes Recientes</h3>
+            ${requestsHTML}
+        </div>
+    `;
+}
+
+/**
+ * Genera el HTML del dashboard de cliente
+ */
+function generateClientDashboard(data) {
+    let statsHTML = '<div class="dashboard-stats">';
+    data.stats.forEach(stat => {
+        statsHTML += `
+            <div class="stat-card client">
+                <span class="stat-number">${stat.number}</span>
+                <span class="stat-label">${stat.label}</span>
+            </div>
+        `;
+    });
+    statsHTML += '</div>';
+    
+    let requestsHTML = '<ul class="request-list">';
+    data.requests.forEach(req => {
+        const statusText = req.status === 'pending' ? 'En Proceso' : 'Completado';
+        requestsHTML += `
+            <li class="request-item ${req.status}">
+                <h4>${req.service}</h4>
+                <p><strong>Volumen:</strong> ${req.volume}</p>
+                <p><strong>Fecha:</strong> ${req.date}</p>
+                <span class="status-badge ${req.status}">${statusText}</span>
+            </li>
+        `;
+    });
+    requestsHTML += '</ul>';
+    
+    return `
+        ${statsHTML}
+        <div class="dashboard-section">
+            <h3>Mis Solicitudes</h3>
+            ${requestsHTML}
+        </div>
+    `;
+}
+
+/**
+ * Cierra el dashboard
+ */
+function closeDashboard() {
+    const dashboardModal = document.getElementById('dashboardModal');
+    if (dashboardModal) {
+        dashboardModal.style.display = 'none';
+        document.body.style.overflow = '';
+    }
+}
+
+/**
+ * Cierra la sesión del usuario
+ */
+function logout() {
+    currentUser = null;
+    localStorage.removeItem('kintsugi_user');
+    updateLoginButton();
+    closeDashboard();
+    showNotification('Sesión cerrada correctamente', 'info');
+}
