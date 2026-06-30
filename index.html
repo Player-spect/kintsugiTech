@@ -10,7 +10,7 @@
 
     <header>
         <h1>kintsugi Tech</h1>
-        <a href="#contacto" class="btn btn-header">Agendar Retiro</a>
+        <button onclick="openLoginModal()" class="btn btn-header" id="loginBtn">Login</button>
     </header>
 
     <!-- Carrusel de Imágenes -->
@@ -45,7 +45,7 @@
     <section class="hero fade-in">
         <h2>Protege tus Datos. Cumple la Ley REP. Reduce la Brecha Digital.</h2>
         <p>Solución corporativa integral para la gestión de activos TI (RAEE) en La Serena, Coquimbo y la región. Retiramos su hardware dado de baja, garantizamos la destrucción de datos con estándares militares y reacondicionamos los equipos para comunidades vulnerables.</p>
-        <a href="#contacto" class="btn btn-primary pulse-animation">Solicitar Evaluación Gratuita</a>
+        <button onclick="scrollToContact()" class="btn btn-primary pulse-animation">Solicitar Evaluación Gratuita</button>
     </section>
 
     <section class="features">
@@ -107,6 +107,44 @@
             </form>
         </div>
     </section>
+
+    <!-- Modal de Login -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeLoginModal()">&times;</span>
+            <h2>Iniciar Sesión</h2>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="loginEmail">Correo Electrónico</label>
+                    <input type="email" id="loginEmail" name="email" placeholder="admin@kintsugitech.cl" required>
+                </div>
+                <div class="form-group">
+                    <label for="loginPassword">Contraseña</label>
+                    <input type="password" id="loginPassword" name="password" placeholder="••••••••" required>
+                </div>
+                <button type="submit" class="submit-btn hover-scale">Ingresar</button>
+            </form>
+            <div class="login-demo">
+                <p><strong>Demo (sin base de datos):</strong></p>
+                <p>Admin: admin@kintsugitech.cl / admin123</p>
+                <p>Cliente: cliente@empresa.cl / cliente123</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dashboard para Administradores y Clientes -->
+    <div id="dashboardModal" class="modal">
+        <div class="modal-content dashboard-content">
+            <span class="close-modal" onclick="closeDashboard()">&times;</span>
+            <div class="dashboard-header">
+                <h2 id="dashboardTitle">Dashboard</h2>
+                <button onclick="logout()" class="btn btn-header" style="background-color: #e53e3e;">Cerrar Sesión</button>
+            </div>
+            <div id="dashboardContent">
+                <!-- El contenido se carga dinámicamente según el tipo de usuario -->
+            </div>
+        </div>
+    </div>
 
     <footer>
         <p>&copy; 2026 kintsugi Tech - Operaciones Centrales en La Serena, Región de Coquimbo.</p>
