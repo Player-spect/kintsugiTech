@@ -34,6 +34,71 @@ body {
 }
 
 /* ========================================
+   DASHBOARD PAGE
+   ======================================== */
+.dashboard-page {
+    background-color: #f0f4f8;
+}
+
+.dashboard-page header {
+    position: relative;
+}
+
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.user-greeting {
+    color: var(--color-white);
+    font-weight: bold;
+    margin-right: 1rem;
+}
+
+.dashboard-main {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 5%;
+}
+
+.dashboard-container {
+    background-color: white;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: var(--shadow-md);
+}
+
+.dashboard-container h2 {
+    color: var(--color-primary);
+    margin-top: 0;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid var(--color-border);
+}
+
+@media (max-width: 768px) {
+    .header-actions {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    
+    .user-greeting {
+        margin-right: 0;
+        margin-bottom: 0.5rem;
+    }
+    
+    .dashboard-main {
+        padding: 0 1rem;
+        margin: 1rem auto;
+    }
+    
+    .dashboard-container {
+        padding: 1rem;
+    }
+}
+
+/* ========================================
    HEADER
    ======================================== */
 header {
