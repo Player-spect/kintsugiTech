@@ -4,187 +4,75 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>kintsugi Tech - Gestión de Residuos Electrónicos B2B en Coquimbo</title>
-    <style>
-        /* Estilos generales y paleta de colores corporativa */
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0;
-            padding: 0;
-            color: #333;
-            line-height: 1.6;
-            background-color: #f7fafc;
-        }
-        header {
-            background-color: #1a365d;
-            color: #ffffff;
-            padding: 1.5rem 5%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        header h1 {
-            margin: 0;
-            font-size: 1.8rem;
-            letter-spacing: 1px;
-        }
-        
-        /* Sección Hero (El gancho comercial) */
-        .hero {
-            background-color: #e2e8f0;
-            padding: 4rem 5%;
-            text-align: center;
-            border-bottom: 4px solid #3182ce;
-        }
-        .hero h2 {
-            font-size: 2.5rem;
-            color: #2d3748;
-            margin-bottom: 1rem;
-            max-width: 900px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-        .hero p {
-            font-size: 1.2rem;
-            max-width: 800px;
-            margin: 0 auto 2rem auto;
-            color: #4a5568;
-        }
-        .btn {
-            display: inline-block;
-            background-color: #3182ce;
-            color: #ffffff;
-            padding: 12px 30px;
-            text-decoration: none;
-            font-size: 1.1rem;
-            border-radius: 5px;
-            font-weight: bold;
-            transition: background 0.3s;
-        }
-        .btn:hover {
-            background-color: #2b6cb0;
-        }
-
-        /* Sección de Propuesta de Valor (El Ciclo) */
-        .features {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            padding: 4rem 5%;
-            gap: 2rem;
-            background-color: #ffffff;
-        }
-        .feature-box {
-            flex: 1 1 200px;
-            max-width: 260px;
-            text-align: center;
-            padding: 2rem;
-            border: 1px solid #e2e8f0;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-            background-color: #f8fafc;
-        }
-        .feature-box h3 {
-            color: #2b6cb0;
-            margin-top: 0;
-            font-size: 1.3rem;
-        }
-
-        /* Sección del Formulario (La Métrica de Éxito) */
-        .form-section {
-            background-color: #edf2f7;
-            padding: 4rem 5%;
-        }
-        .contact-form {
-            max-width: 600px;
-            margin: 0 auto;
-            background-color: #ffffff;
-            padding: 3rem;
-            border-radius: 8px;
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-        }
-        .contact-form h2 {
-            text-align: center;
-            color: #2d3748;
-            margin-top: 0;
-            margin-bottom: 2rem;
-        }
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-        .form-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: bold;
-            color: #4a5568;
-        }
-        .form-group input, .form-group select {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid #cbd5e0;
-            border-radius: 4px;
-            box-sizing: border-box;
-            font-family: inherit;
-        }
-        .submit-btn {
-            width: 100%;
-            background-color: #38a169;
-            color: white;
-            border: none;
-            padding: 15px;
-            font-size: 1.2rem;
-            border-radius: 4px;
-            cursor: pointer;
-            font-weight: bold;
-            transition: background 0.3s;
-        }
-        .submit-btn:hover {
-            background-color: #2f855a;
-        }
-
-        /* Pie de página */
-        footer {
-            background-color: #1a365d;
-            color: #a0aec0;
-            text-align: center;
-            padding: 2rem 5%;
-            font-size: 0.9rem;
-        }
-    </style>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
     <header>
         <h1>kintsugi Tech</h1>
-        <a href="#contacto" class="btn" style="padding: 8px 20px; font-size: 1rem;">Agendar Retiro</a>
+        <a href="#contacto" class="btn btn-header">Agendar Retiro</a>
     </header>
 
-    <section class="hero">
+    <!-- Carrusel de Imágenes -->
+    <section class="carousel-section">
+        <div class="carousel-container">
+            <button class="carousel-btn prev-btn" id="prevBtn">&#10094;</button>
+            <div class="carousel-track-container">
+                <ul class="carousel-track" id="carouselTrack">
+                    <li class="carousel-slide current-slide">
+                        <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=1200&h=500&fit=crop" alt="Tecnología y reciclaje electrónico">
+                        <div class="carousel-caption">Gestión Profesional de RAEE</div>
+                    </li>
+                    <li class="carousel-slide">
+                        <img src="https://images.unsplash.com/photo-1531297484001-80022131f5a1?w=1200&h=500&fit=crop" alt="Equipos electrónicos">
+                        <div class="carousel-caption">Destrucción Segura de Datos</div>
+                    </li>
+                    <li class="carousel-slide">
+                        <img src="https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=1200&h=500&fit=crop" alt="Innovación tecnológica">
+                        <div class="carousel-caption">Impacto Social Positivo</div>
+                    </li>
+                    <li class="carousel-slide">
+                        <img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=1200&h=500&fit=crop" alt="Trabajo en equipo tecnológico">
+                        <div class="carousel-caption">Cumplimiento Ley REP</div>
+                    </li>
+                </ul>
+            </div>
+            <button class="carousel-btn next-btn" id="nextBtn">&#10095;</button>
+            <div class="carousel-dots" id="carouselDots"></div>
+        </div>
+    </section>
+
+    <section class="hero fade-in">
         <h2>Protege tus Datos. Cumple la Ley REP. Reduce la Brecha Digital.</h2>
         <p>Solución corporativa integral para la gestión de activos TI (RAEE) en La Serena, Coquimbo y la región. Retiramos su hardware dado de baja, garantizamos la destrucción de datos con estándares militares y reacondicionamos los equipos para comunidades vulnerables.</p>
-        <a href="#contacto" class="btn">Solicitar Evaluación Gratuita</a>
+        <a href="#contacto" class="btn btn-primary pulse-animation">Solicitar Evaluación Gratuita</a>
     </section>
 
     <section class="features">
-        <div class="feature-box">
+        <div class="feature-box slide-up">
+            <div class="feature-icon">🚚</div>
             <h3>1. Logística Inversa</h3>
             <p>Retiro seguro y trazable de equipos directamente desde sus faenas, oficinas o bodegas en la región, manteniendo estricta cadena de custodia.</p>
         </div>
-        <div class="feature-box">
+        <div class="feature-box slide-up" style="transition-delay: 0.1s;">
+            <div class="feature-icon">🔒</div>
             <h3>2. Borrado Seguro</h3>
             <p>Destrucción irrecuperable de información confidencial aplicando el estándar internacional NIST SP 800-88, respaldado por un certificado de sanitización.</p>
         </div>
-        <div class="feature-box">
+        <div class="feature-box slide-up" style="transition-delay: 0.2s;">
+            <div class="feature-icon">📊</div>
             <h3>3. Cumplimiento ESG</h3>
             <p>Entrega de reportes y certificados de disposición final válidos para acreditar el cumplimiento de las metas de la Ley REP en su empresa.</p>
         </div>
-        <div class="feature-box">
+        <div class="feature-box slide-up" style="transition-delay: 0.3s;">
+            <div class="feature-icon">🌱</div>
             <h3>4. Impacto Social</h3>
             <p>El hardware recuperado se optimiza (software y componentes) y es donado o vendido a precio social a escuelas y fundaciones locales.</p>
         </div>
     </section>
 
     <section id="contacto" class="form-section">
-        <div class="contact-form">
+        <div class="contact-form fade-in">
             <h2>Agenda una Evaluación de Activos TI</h2>
             <!-- Este formulario es el prototipo para medir el interés (Test Card) -->
             <form action="#" method="get" onsubmit="alert('¡Gracias! Este es un prototipo. Si esto fuera real, tus datos habrían sido enviados para agendar la reunión.'); return false;">
@@ -215,7 +103,7 @@
                     </select>
                 </div>
 
-                <button type="submit" class="submit-btn">Agendar Evaluación Técnica</button>
+                <button type="submit" class="submit-btn hover-scale">Agendar Evaluación Técnica</button>
             </form>
         </div>
     </section>
@@ -225,5 +113,6 @@
         <p>Economía Circular · Ciberseguridad · Inclusión Digital</p>
     </footer>
 
+    <script src="script.js"></script>
 </body>
 </html>

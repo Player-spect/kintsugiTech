@@ -1,0 +1,492 @@
+/* ========================================
+   VARIABLES CSS (Custom Properties)
+   ======================================== */
+:root {
+    --color-primary: #1a365d;
+    --color-secondary: #3182ce;
+    --color-accent: #38a169;
+    --color-text: #333;
+    --color-text-light: #4a5568;
+    --color-bg: #f7fafc;
+    --color-white: #ffffff;
+    --color-border: #e2e8f0;
+    --shadow-sm: 0 4px 6px rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+    --transition-fast: 0.3s ease;
+    --transition-normal: 0.5s ease;
+}
+
+/* ========================================
+   ESTILOS GENERALES
+   ======================================== */
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    color: var(--color-text);
+    line-height: 1.6;
+    background-color: var(--color-bg);
+}
+
+/* ========================================
+   HEADER
+   ======================================== */
+header {
+    background-color: var(--color-primary);
+    color: var(--color-white);
+    padding: 1.5rem 5%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: var(--shadow-md);
+}
+
+header h1 {
+    margin: 0;
+    font-size: 1.8rem;
+    letter-spacing: 1px;
+}
+
+/* ========================================
+   BOTONES
+   ======================================== */
+.btn {
+    display: inline-block;
+    background-color: var(--color-secondary);
+    color: var(--color-white);
+    padding: 12px 30px;
+    text-decoration: none;
+    font-size: 1.1rem;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: all var(--transition-fast);
+    border: none;
+    cursor: pointer;
+}
+
+.btn:hover {
+    background-color: #2b6cb0;
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.btn-header {
+    padding: 8px 20px;
+    font-size: 1rem;
+}
+
+.btn-primary {
+    background-color: var(--color-secondary);
+}
+
+/* ========================================
+   CARRUSEL DE IMÁGENES
+   ======================================== */
+.carousel-section {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    background-color: #000;
+}
+
+.carousel-container {
+    position: relative;
+    max-width: 1400px;
+    margin: 0 auto;
+    height: 500px;
+}
+
+.carousel-track-container {
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+}
+
+.carousel-track {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    transition: transform 0.5s ease-in-out;
+}
+
+.carousel-slide {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 100%;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+}
+
+.carousel-slide.current-slide {
+    opacity: 1;
+}
+
+.carousel-slide img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: brightness(0.7);
+}
+
+.carousel-caption {
+    position: absolute;
+    bottom: 80px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgba(26, 54, 93, 0.85);
+    color: var(--color-white);
+    padding: 15px 40px;
+    border-radius: 8px;
+    font-size: 1.5rem;
+    font-weight: bold;
+    text-align: center;
+    max-width: 80%;
+    backdrop-filter: blur(5px);
+}
+
+.carousel-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(255, 255, 255, 0.3);
+    color: var(--color-white);
+    border: none;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.carousel-btn:hover {
+    background-color: rgba(255, 255, 255, 0.9);
+    color: var(--color-primary);
+    transform: translateY(-50%) scale(1.1);
+}
+
+.prev-btn {
+    left: 20px;
+}
+
+.next-btn {
+    right: 20px;
+}
+
+.carousel-dots {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 12px;
+    z-index: 10;
+}
+
+.carousel-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.5);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.carousel-dot.active {
+    background-color: var(--color-white);
+    transform: scale(1.3);
+}
+
+/* ========================================
+   SECCIÓN HERO
+   ======================================== */
+.hero {
+    background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e0 100%);
+    padding: 4rem 5%;
+    text-align: center;
+    border-bottom: 4px solid var(--color-secondary);
+}
+
+.hero h2 {
+    font-size: 2.5rem;
+    color: #2d3748;
+    margin-bottom: 1rem;
+    max-width: 900px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.hero p {
+    font-size: 1.2rem;
+    max-width: 800px;
+    margin: 0 auto 2rem auto;
+    color: var(--color-text-light);
+}
+
+/* ========================================
+   SECCIÓN FEATURES
+   ======================================== */
+.features {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 4rem 5%;
+    gap: 2rem;
+    background-color: var(--color-white);
+}
+
+.feature-box {
+    flex: 1 1 200px;
+    max-width: 260px;
+    text-align: center;
+    padding: 2rem;
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    box-shadow: var(--shadow-sm);
+    background-color: #f8fafc;
+    transition: all var(--transition-fast);
+}
+
+.feature-box:hover {
+    transform: translateY(-10px);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--color-secondary);
+}
+
+.feature-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    display: block;
+}
+
+.feature-box h3 {
+    color: var(--color-secondary);
+    margin-top: 0;
+    font-size: 1.3rem;
+}
+
+/* ========================================
+   SECCIÓN FORMULARIO
+   ======================================== */
+.form-section {
+    background-color: #edf2f7;
+    padding: 4rem 5%;
+}
+
+.contact-form {
+    max-width: 600px;
+    margin: 0 auto;
+    background-color: var(--color-white);
+    padding: 3rem;
+    border-radius: 8px;
+    box-shadow: var(--shadow-md);
+}
+
+.contact-form h2 {
+    text-align: center;
+    color: #2d3748;
+    margin-top: 0;
+    margin-bottom: 2rem;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+    color: var(--color-text-light);
+}
+
+.form-group input,
+.form-group select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #cbd5e0;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-family: inherit;
+    transition: border-color var(--transition-fast);
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    outline: none;
+    border-color: var(--color-secondary);
+    box-shadow: 0 0 0 3px rgba(49, 130, 206, 0.1);
+}
+
+.submit-btn {
+    width: 100%;
+    background-color: var(--color-accent);
+    color: white;
+    border: none;
+    padding: 15px;
+    font-size: 1.2rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all var(--transition-fast);
+}
+
+.submit-btn:hover {
+    background-color: #2f855a;
+    transform: scale(1.02);
+    box-shadow: var(--shadow-md);
+}
+
+/* ========================================
+   FOOTER
+   ======================================== */
+footer {
+    background-color: var(--color-primary);
+    color: #a0aec0;
+    text-align: center;
+    padding: 2rem 5%;
+    font-size: 0.9rem;
+}
+
+/* ========================================
+   ANIMACIONES
+   ======================================== */
+
+/* Fade In - Aparecer suavemente */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.fade-in {
+    animation: fadeIn 1s ease-in-out;
+}
+
+/* Slide Up - Deslizar hacia arriba */
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.slide-up {
+    animation: slideUp 0.6s ease-out forwards;
+    opacity: 0;
+}
+
+/* Pulse Animation - Latido para botones importantes */
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(49, 130, 206, 0.7);
+    }
+    70% {
+        box-shadow: 0 0 0 15px rgba(49, 130, 206, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(49, 130, 206, 0);
+    }
+}
+
+.pulse-animation {
+    animation: pulse 2s infinite;
+}
+
+/* Hover Scale - Escalar al pasar el mouse */
+.hover-scale {
+    transition: transform var(--transition-fast);
+}
+
+.hover-scale:hover {
+    transform: scale(1.05);
+}
+
+/* ========================================
+   RESPONSIVE DESIGN
+   ======================================== */
+@media (max-width: 768px) {
+    header {
+        flex-direction: column;
+        gap: 1rem;
+        text-align: center;
+    }
+
+    .hero h2 {
+        font-size: 1.8rem;
+    }
+
+    .hero p {
+        font-size: 1rem;
+    }
+
+    .carousel-container {
+        height: 300px;
+    }
+
+    .carousel-caption {
+        font-size: 1rem;
+        padding: 10px 20px;
+        bottom: 60px;
+    }
+
+    .carousel-btn {
+        width: 40px;
+        height: 40px;
+        font-size: 1.2rem;
+    }
+
+    .prev-btn {
+        left: 10px;
+    }
+
+    .next-btn {
+        right: 10px;
+    }
+
+    .feature-box {
+        max-width: 100%;
+    }
+
+    .contact-form {
+        padding: 2rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .carousel-container {
+        height: 200px;
+    }
+
+    .carousel-caption {
+        font-size: 0.9rem;
+        padding: 8px 15px;
+        bottom: 50px;
+    }
+
+    .btn {
+        padding: 10px 20px;
+        font-size: 1rem;
+    }
+}
